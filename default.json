@@ -1,0 +1,29 @@
+{
+  "image": {
+    "width": 800,
+    "height": 600,
+    "background": "transparent"
+  },
+  "site_name": {
+    "text": "Alex Tran",
+    "font_family": "Meow Script",
+    "font_weight": 400,
+    "font_style": "normal",
+    "font_size": 72,
+    "color": "#000000",
+    "position": {"x": 230, "y": 250},
+    "letter_spacing": 15,
+    "word_spacing": 36
+  },
+  "slogan": {
+    "text": "Silent midnight hum.Code runs — bug hides in plain sight.",
+    "font_family": "Audiowide",
+    "font_weight": 400,
+    "font_style": "normal",
+    "font_size": 15,
+    "color": "#555555",
+    "position": {"x": 200, "y": 330},
+    "letter_spacing": 0,
+    "word_spacing": 0
+  }
+}
