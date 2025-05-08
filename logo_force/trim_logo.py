@@ -3,19 +3,19 @@ from PIL import Image
 
 def trim_image(input_path, output_path):
     image = Image.open(input_path)
-    # Chuyển về chế độ RGBA nếu chưa phải
+    # Convert to RGBA mode if not already
     if image.mode != "RGBA":
         image = image.convert("RGBA")
 
-    # Tìm bounding box của phần không trong suốt
+    # Find bounding box of non-transparent content
     bbox = image.getbbox()
     if bbox:
-        # Cắt ảnh theo bounding box
+        # Crop image according to bounding box
         cropped_image = image.crop(bbox)
         cropped_image.save(output_path, "PNG")
-        print(f"Ảnh đã được trim và lưu tại: {output_path}")
+        print(f"Image has been trimmed and saved at: {output_path}")
     else:
-        print("Không tìm thấy nội dung để trim")
+        print("No content found to trim")
 
 
 if __name__ == "__main__":

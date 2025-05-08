@@ -7,7 +7,7 @@ from PIL import ImageFont
 
 
 def generate_logo(config_path=None):
-    """Tạo logo từ file cấu hình JSON."""
+    """Generate a logo from a JSON configuration file."""
     if not config_path:
         config_path = settings.DEFAULT_CONFIG_PATH
 
@@ -15,7 +15,7 @@ def generate_logo(config_path=None):
         with open(config_path) as f:
             config = json.load(f)
     except FileNotFoundError:
-        raise Exception(f"Không tìm thấy file {config_path}")
+        raise Exception(f"File not found: {config_path}")
 
     image, draw = create_logo_image(config)
 

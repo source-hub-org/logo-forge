@@ -18,12 +18,27 @@ LogoForge is a powerful command-line tool for generating text-based logos with c
    cd logo-forge
    ```
 
-2. Install dependencies:
+2. Create and activate a virtual environment:
+   ```
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+   
+   This creates an isolated Python environment for the project. The `source venv/bin/activate` command activates the environment, which you'll see indicated by `(venv)` in your command prompt.
+
+3. Install dependencies:
    ```
    pip install -r requirements.txt
    ```
 
-3. Set up your Google Fonts API key in the environment variables or settings.
+4. Set up your Google Fonts API key in the environment variables or settings.
+
+5. When you're done working with the project, you can deactivate the virtual environment:
+   ```
+   deactivate
+   ```
+   
+   This returns your terminal to the global Python environment.
 
 ## Usage
 
@@ -117,6 +132,23 @@ The JSON configuration file allows you to customize every aspect of your logo. H
 4. Text elements are rendered with the configured typography settings
 5. The image is saved as a PNG file
 6. Optionally, the image can be trimmed to remove excess transparent space
+
+## Development
+
+### Code Quality
+
+Maintain code quality by running these commands before submitting changes:
+
+```bash
+black .
+isort .
+ruff check --fix .
+```
+
+These tools help ensure consistent code formatting and quality:
+- `black`: Formats Python code according to a consistent style
+- `isort`: Sorts and organizes your imports
+- `ruff`: Fast Python linter that identifies and fixes common issues
 
 ## License
 

@@ -1,10 +1,9 @@
-
 from django.core.management.base import BaseCommand
 from logo_generator.services.logo_service import generate_logo
 
 
 class Command(BaseCommand):
-    help = "Tạo logo dạng chữ từ file JSON cấu hình"
+    help = "Generate a text logo from a JSON configuration file"
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -12,7 +11,7 @@ class Command(BaseCommand):
             nargs="?",
             type=str,
             default=None,
-            help="Đường dẫn đến file JSON cấu hình (mặc định: default.json)",
+            help="Path to the JSON configuration file (default: default.json)",
         )
 
     def handle(self, *args, **options):
@@ -20,7 +19,7 @@ class Command(BaseCommand):
         try:
             output_path = generate_logo(config_file)
             self.stdout.write(
-                self.style.SUCCESS(f"Logo đã được tạo thành công: {output_path}")
+                self.style.SUCCESS(f"Logo successfully created: {output_path}")
             )
         except Exception as e:
-            self.stdout.write(self.style.ERROR(f"Lỗi: {str(e)}"))
+            self.stdout.write(self.style.ERROR(f"Error: {str(e)}"))

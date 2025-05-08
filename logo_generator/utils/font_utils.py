@@ -6,7 +6,7 @@ from django.conf import settings
 
 
 def get_api_variant(weight, style):
-    """Chuyển đổi weight và style thành variant của Google Fonts."""
+    """Convert weight and style to Google Fonts variant format."""
     if weight == 400 and style == "normal":
         return "regular"
     elif weight == 400 and style == "italic":
@@ -19,7 +19,7 @@ def get_api_variant(weight, style):
 
 
 def get_font_path(font_family, weight, style):
-    """Tải font từ Google Fonts hoặc lấy từ cache."""
+    """Download font from Google Fonts or retrieve from cache."""
     variant = get_api_variant(weight, style)
     cache_dir = os.path.join(settings.BASE_DIR, "font_cache")
     os.makedirs(cache_dir, exist_ok=True)
@@ -29,7 +29,7 @@ def get_font_path(font_family, weight, style):
     if os.path.exists(local_path):
         return local_path
 
-    # Cache danh sách font
+    # Cache font list
     font_list_cache = os.path.join(cache_dir, "font_list.json")
     fonts = None
     if os.path.exists(font_list_cache):
@@ -38,9 +38,9 @@ def get_font_path(font_family, weight, style):
 
     if not fonts:
         if not settings.GOOGLE_FONTS_API_KEY:
-            raise Exception("Thiếu GOOGLE_FONTS_API_KEY trong cấu hình môi trường")
+            raise Exception("Missing GOOGLE_FONTS_API_KEY in environment configuration")
 
-        # Tải danh sách font từ Google Fonts API
+        # Download font list from Google Fonts API
         try:
             response = requests.get(
                 f"https://www.googleapis.com/webfonts/v1/webfonts?key={settings.GOOGLE_FONTS_API_KEY}",
@@ -48,15 +48,15 @@ def get_font_path(font_family, weight, style):
             )
             response.raise_for_status()
             fonts = response.json().get("items", [])
-            # Lưu danh sách font vào cache
+            # Save font list to cache
             with open(font_list_cache, "w") as f:
                 json.dump(fonts, f)
         except requests.exceptions.RequestException as e:
             raise Exception(
-                f"Không thể lấy danh sách font từ Google Fonts API: {str(e)}"
+                f"Unable to retrieve font list from Google Fonts API: {str(e)}"
             )
 
-    # Tìm font
+    # Find font
     for font in fonts:
         if font["family"].lower() == font_family.lower():
             files = font.get("files", {})
@@ -69,9 +69,9 @@ def get_font_path(font_family, weight, style):
                         f.write(font_response.content)
                     return local_path
                 except requests.exceptions.RequestException as e:
-                    raise Exception(f"Không thể tải font từ {font_url}: {str(e)}")
+                    raise Exception(
+                        f"Unable to download font from {font_url}: {str(e)}"
+                    )
             else:
-                raise Exception(
-                    f"Không tìm thấy variant {variant} cho font {font_family}"
-                )
-    raise Exception(f"Không tìm thấy font family {font_family}")
+                raise Exception(f"Variant {variant} not found for font {font_family}")
+    raise Exception(f"Font family {font_family} not found")
