@@ -2,7 +2,7 @@
   "output": "svg",
   "auto_trim": true,
   "svg_options": {
-    "embed_fonts": false
+    "embed_fonts": true
   },
   "image": {
     "width": 960,
