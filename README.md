@@ -9,7 +9,9 @@ LogoForge is a powerful command-line tool for generating text-based logos with c
 - Support for Google Fonts with automatic font downloading and caching
 - Adjustable letter spacing and word spacing for perfect typography
 - Automatic image trimming to remove excess transparent space for both PNG and SVG formats
+- Consistent dimensions and appearance between PNG and SVG output formats
 - SVG output with options for font embedding or linking to Google Fonts
+- Robust text rendering with proper spacing and positioning
 
 ## Installation
 
@@ -97,7 +99,7 @@ convert output.png -trim output_trimmed.png
 python -m logo_force.trim_logo
 ```
 
-The trimming functionality works for both PNG and SVG output formats. For SVG files, it calculates the bounding box of all text elements and adjusts the SVG's viewBox accordingly.
+The trimming functionality works for both PNG and SVG output formats. For SVG files, it calculates the bounding box of all text elements and adjusts the SVG's viewBox accordingly. When both PNG and SVG formats are generated, the system ensures consistent dimensions and appearance between the two formats.
 
 ## SVG Output Options
 
@@ -232,7 +234,9 @@ For SVG output, the tool:
 2. Adds Google Fonts import or embeds fonts directly as data URIs
 3. Renders text elements with proper positioning and styling
 4. Applies letter and word spacing by positioning each character individually
-5. Optionally trims the SVG by calculating the bounding box of all text elements and adjusting the viewBox
+5. Calculates accurate character widths based on font metrics
+6. Optionally trims the SVG by calculating the bounding box of all text elements and adjusting the viewBox
+7. Handles Google Fonts rendering differences with appropriate adjustments
 
 ### PNG Generation Process
 
@@ -241,7 +245,28 @@ For PNG output, the tool:
 2. Downloads and loads the specified Google Fonts
 3. Renders text elements with proper positioning and styling
 4. Applies letter and word spacing by positioning each character individually
-5. Optionally trims the image by removing transparent borders
+5. Adjusts text positioning to match SVG baseline positioning
+6. Handles font-specific adjustments for consistent appearance
+7. Optionally trims the image by removing transparent borders
+8. Ensures dimensions match SVG output when both formats are generated
+
+## Consistency Between PNG and SVG Outputs
+
+LogoForge ensures consistent appearance and dimensions between PNG and SVG outputs through several mechanisms:
+
+1. **Coordinated Trimming Process**: When both PNG and SVG formats are generated, the SVG is processed first, and the PNG is adjusted to match the SVG dimensions.
+
+2. **Font-Specific Adjustments**: Different font families are handled with specific adjustments for better accuracy in both formats.
+
+3. **Baseline Alignment**: Text positioning in PNG is adjusted to match SVG baseline positioning, ensuring consistent vertical alignment.
+
+4. **Character Width Calculations**: Accurate character width calculations are applied in both formats, with special handling for wider characters like 'W' and 'M' and narrower characters like 'i' and 'l'.
+
+5. **Google Fonts Handling**: Special adjustments are made for Google Fonts rendering differences to ensure consistent appearance.
+
+6. **Aspect Ratio Preservation**: When trimming, the aspect ratio is preserved between formats to maintain visual consistency.
+
+This ensures that whether you choose PNG or SVG output, your logo will have a consistent appearance across both formats.
 
 ## Code Examples
 
