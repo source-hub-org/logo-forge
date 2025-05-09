@@ -1,33 +1,34 @@
 {
   "output": "svg",
+  "auto_trim": true,
   "svg_options": {
     "embed_fonts": false
   },
   "image": {
-    "width": 800,
-    "height": 600,
+    "width": 960,
+    "height": 720,
     "background": "transparent"
   },
   "site_name": {
     "text": "Alex Tran",
-    "font_family": "Meow Script",
+    "font_family": "Monoton",
     "font_weight": 400,
     "font_style": "normal",
-    "font_size": 72,
+    "font_size": 54,
     "color": "#000000",
-    "position": {"x": 230, "y": 250},
-    "letter_spacing": 15,
-    "word_spacing": 36
+    "position": {"x": 20, "y": 250},
+    "letter_spacing": 3,
+    "word_spacing": 24
   },
   "slogan": {
     "text": "Silent midnight hum. Code runs — bug hides in plain sight.",
-    "font_family": "Audiowide",
+    "font_family": "Pacifico",
     "font_weight": 400,
     "font_style": "normal",
-    "font_size": 15,
-    "color": "#555555",
-    "position": {"x": 200, "y": 330},
-    "letter_spacing": 0,
-    "word_spacing": 0
+    "font_size": 13,
+    "color": "#000000",
+    "position": {"x": 20, "y": 280},
+    "letter_spacing": 1,
+    "word_spacing": 5
   }
 }

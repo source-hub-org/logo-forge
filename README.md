@@ -4,11 +4,12 @@ LogoForge is a powerful command-line tool for generating text-based logos with c
 
 ## Features
 
-- Generate PNG images with transparent backgrounds
+- Generate PNG or SVG images with transparent backgrounds
 - Customize site name and slogan with different fonts, sizes, colors, and positions
 - Support for Google Fonts with automatic font downloading and caching
 - Adjustable letter spacing and word spacing for perfect typography
-- Automatic image trimming to remove excess transparent space
+- Automatic image trimming to remove excess transparent space for both PNG and SVG formats
+- SVG output with options for font embedding or linking to Google Fonts
 
 ## Installation
 
@@ -50,7 +51,7 @@ Generate a logo using the default configuration:
 python manage.py generate_logo
 ```
 
-This will create an `output.png` file with your logo.
+This will create an `output.png` or `output.svg` file with your logo, depending on your configuration.
 
 ### Custom Configuration
 
@@ -62,16 +63,98 @@ python manage.py generate_logo path/to/your/config.json
 
 ### Trimming the Output
 
-To remove excess transparent space around your logo:
+To remove excess transparent space around your logo, you have several options:
+
+#### 1. Automatic trimming with the command-line flag
+
+```
+python manage.py generate_logo --trim
+```
+
+This will generate both the original logo and a trimmed version with the suffix "_trimmed".
+
+#### 2. Automatic trimming via configuration
+
+Add the `auto_trim` option to your configuration file:
+
+```json
+{
+  "output": "png",
+  "auto_trim": true,
+  ...
+}
+```
+
+#### 3. Manual trimming with ImageMagick (for PNG files)
 
 ```
 convert output.png -trim output_trimmed.png
 ```
 
-Or use the built-in Python trimming utility:
+#### 4. Manual trimming with the built-in Python utility (supports both PNG and SVG)
 
 ```
 python -m logo_force.trim_logo
+```
+
+The trimming functionality works for both PNG and SVG output formats. For SVG files, it calculates the bounding box of all text elements and adjusts the SVG's viewBox accordingly.
+
+## SVG Output Options
+
+LogoForge supports SVG output with two font handling options:
+
+### 1. Linking to Google Fonts (Default)
+
+```json
+{
+  "output": "svg",
+  "svg_options": {
+    "embed_fonts": false
+  }
+}
+```
+
+This generates an SVG that links to Google Fonts CDN:
+
+```xml
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&display=swap');
+    </style>
+  </defs>
+  <!-- SVG content -->
+</svg>
+```
+
+### 2. Embedding Fonts
+
+```json
+{
+  "output": "svg",
+  "svg_options": {
+    "embed_fonts": true
+  }
+}
+```
+
+This embeds the font data directly in the SVG for offline use:
+
+```xml
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css">
+      @font-face {
+        font-family: 'Roboto';
+        src: url('data:font/truetype;base64,AAEAAAASAQAABAAgR0RFRgBKAA...') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+      /* Additional embedded fonts */
+    </style>
+  </defs>
+  <!-- SVG content -->
+</svg>
 ```
 
 ## Configuration
@@ -80,6 +163,11 @@ The JSON configuration file allows you to customize every aspect of your logo. H
 
 ```json
 {
+  "output": "png",
+  "auto_trim": false,
+  "svg_options": {
+    "embed_fonts": false
+  },
   "image": {
     "width": 800,
     "height": 600,
@@ -112,6 +200,10 @@ The JSON configuration file allows you to customize every aspect of your logo. H
 
 ### Configuration Options
 
+- **output**: Output format, either "png" or "svg" (default: "png")
+- **auto_trim**: Whether to automatically trim excess transparent space (default: false)
+- **svg_options**: Options specific to SVG output:
+  - `embed_fonts`: Whether to embed fonts in the SVG file (default: false)
 - **image**: Define the canvas dimensions and background
 - **site_name** and **slogan**: Configure text elements with:
   - `text`: The content to display
@@ -130,8 +222,54 @@ The JSON configuration file allows you to customize every aspect of your logo. H
 2. It downloads and caches any required Google Fonts
 3. A transparent canvas is created with the specified dimensions
 4. Text elements are rendered with the configured typography settings
-5. The image is saved as a PNG file
+5. The image is saved in the specified format (PNG or SVG)
 6. Optionally, the image can be trimmed to remove excess transparent space
+
+### SVG Generation Process
+
+For SVG output, the tool:
+1. Creates an SVG document with the specified dimensions
+2. Adds Google Fonts import or embeds fonts directly as data URIs
+3. Renders text elements with proper positioning and styling
+4. Applies letter and word spacing by positioning each character individually
+5. Optionally trims the SVG by calculating the bounding box of all text elements and adjusting the viewBox
+
+### PNG Generation Process
+
+For PNG output, the tool:
+1. Creates a transparent image with the specified dimensions
+2. Downloads and loads the specified Google Fonts
+3. Renders text elements with proper positioning and styling
+4. Applies letter and word spacing by positioning each character individually
+5. Optionally trims the image by removing transparent borders
+
+## Code Examples
+
+### Generating a Logo Programmatically
+
+```python
+from logo_generator.services.logo_service import generate_logo
+
+# Generate a logo using the default configuration
+output_path = generate_logo()
+print(f"Logo created at: {output_path}")
+
+# Generate a logo with a custom configuration
+output_path = generate_logo("path/to/config.json")
+print(f"Logo created at: {output_path}")
+```
+
+### Trimming a Logo Programmatically
+
+```python
+from logo_force.trim_logo import trim_image
+
+# Trim a PNG image
+trim_image("output.png", "output_trimmed.png")
+
+# Trim an SVG image
+trim_image("output.svg", "output_trimmed.svg")
+```
 
 ## Development
 
