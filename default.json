@@ -1,4 +1,8 @@
 {
+  "output": "svg",
+  "svg_options": {
+    "embed_fonts": false
+  },
   "image": {
     "width": 800,
     "height": 600,
@@ -16,7 +20,7 @@
     "word_spacing": 36
   },
   "slogan": {
-    "text": "Silent midnight hum.Code runs — bug hides in plain sight.",
+    "text": "Silent midnight hum. Code runs — bug hides in plain sight.",
     "font_family": "Audiowide",
     "font_weight": 400,
     "font_style": "normal",
