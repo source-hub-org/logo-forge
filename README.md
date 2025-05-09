@@ -13,6 +13,11 @@ LogoForge is a powerful command-line tool for generating text-based logos with c
 - SVG output with options for font embedding or linking to Google Fonts
 - Robust text rendering with proper spacing and positioning
 
+## Sample Output
+
+![Logo Force](./assets/project.svg)
+
+
 ## Installation
 
 1. Clone the repository:
